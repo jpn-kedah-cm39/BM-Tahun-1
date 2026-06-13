@@ -197,6 +197,11 @@
   .balang .skor small{font-size:24px;color:var(--teks-lembut)}
   .bintang-baris{font-size:40px;letter-spacing:4px;margin-top:8px}
   .tamat .ucap{font-weight:800;color:var(--teks-lembut);font-size:17px;margin:4px 0 22px}
+  .terbaik{display:inline-block;background:#fff;border-radius:14px;padding:8px 16px;margin:6px auto 2px;
+    font-family:'Fredoka';font-weight:600;font-size:15px;color:var(--amber-gelap);box-shadow:var(--bayang)}
+  .terbaik .baharu{color:var(--hijau);margin-left:6px}
+
+  footer{text-align:center;margin-top:22px;font-size:11px;color:var(--teks-lembut);font-weight:700;line-height:1.6}
 
   .nota{background:rgba(255,255,255,.6);border-radius:18px;padding:14px 16px;margin-top:18px;font-size:13.5px;
     color:var(--teks-lembut);font-weight:700;line-height:1.5}
@@ -231,7 +236,7 @@
 
     <div class="menu-aksi">
       <button class="btn btn-koral" onclick="bukaPilih()">📚 Pilih Latihan</button>
-      <button class="btn btn-hijau" onclick="mulaModul()">📋 Ulangkaji Modul Selangkah (Tema 1–3)</button>
+      <button class="btn btn-hijau" onclick="mulaModul()">📋 Ulangkaji Modul Selangkah (10 set rawak · Tema 1–3)</button>
       <button class="btn btn-amber" onclick="latihanPantas()">⚡ Latihan Pantas (Campur)</button>
     </div>
     <div class="tetapan-baris">
@@ -239,7 +244,7 @@
     </div>
 
     <div class="nota">
-      <b>👋 Untuk ibu &amp; bapa:</b> <b>Ulangkaji Modul Selangkah</b> ialah satu set ujian 6 bahagian (objektif, padan gambar, susun ayat, isi tempat kosong, bina ayat) berdasarkan Tema 1–3.
+      <b>👋 Untuk ibu &amp; bapa:</b> <b>Ulangkaji Modul Selangkah</b> mempunyai <b>10 set soalan</b> yang dipilih secara <b>rawak</b> setiap kali — setiap set merangkumi 6 bahagian: Soalan Objektif, Padankan Gambar, Susun Ayat, Isi Tempat Kosong (Penjodoh Bilangan), Isi Tempat Kosong dan Bina Ayat, berdasarkan Tema 1–3.
       <b>Pilih Latihan</b> pula untuk memilih latihan ikut tema/unit; hidupkan <b>Pilih Banyak</b> untuk gabungkan beberapa latihan.
       Semua disemak automatik — anak hanya perlu <b>tekan</b>, tiada perlu menaip.
     </div>
@@ -260,6 +265,7 @@
     <div class="top-latih">
       <button class="balik" onclick="tanyaBerhenti()">⬅️</button>
       <div class="progres"><div id="progresBar"></div></div>
+      <button class="balik" id="btnBunyiLatih" onclick="togolBunyi()" title="Hidup/matikan bunyi">🔊</button>
       <div class="bintang-kira"><span>⭐</span><span id="kiraBintang">0</span></div>
     </div>
     <div class="kad">
@@ -283,12 +289,18 @@
       <div class="skor"><span id="skorBetul">0</span><small>/<span id="skorJumlah">0</span></small></div>
       <div class="bintang-baris" id="bintangBaris"></div>
     </div>
+    <div class="terbaik" id="hasilTerbaik" style="display:none"></div>
     <p class="ucap" id="ucapTamat"></p>
     <div class="btn-row">
       <button class="btn btn-amber" onclick="ulangLatihan()">🔁 Cuba Lagi</button>
       <button class="btn btn-koral" onclick="keMula()">🏠 Menu</button>
     </div>
   </section>
+
+  <footer>
+    Dibangunkan oleh Hafiz Husaini · Unit TMK, Sektor Pembelajaran · JPNK<br>
+    Berdasarkan Buku Teks &amp; DSKP KSSR Bahasa Melayu Tahun 1
+  </footer>
 
 </div>
 
@@ -786,51 +798,354 @@ const DATA = [
    ]},
 ];
 
-/* ===================== ULANGKAJI MODUL SELANGKAH (Tema 1–3) ===================== */
-const MODUL = [
- { bahagian:'Bahagian 1 · Soalan Objektif', soalan:[
-   {kind:'em', em:'🐔', teks:'Apakah haiwan ini?', pilihan:['Ayam','Itik','Angsa'], jwp:0},
-   {kind:'teks', teks:'Ibu kepada ibu kita dipanggil?', pilihan:['Nenek','Kakak','Ibu'], jwp:0},
-   {kind:'teks', teks:'Antara berikut, makanan yang sihat ialah?', pilihan:['Buah-buahan','Gula-gula','Aiskrim'], jwp:0},
-   {kind:'em', em:'🪥', teks:'Kita menggosok gigi menggunakan?', pilihan:['Berus gigi','Sabun','Syampu'], jwp:0},
-   {kind:'em', em:'🐃', teks:'Haiwan yang membantu membajak sawah ialah?', pilihan:['Kerbau','Kucing','Ayam'], jwp:0},
-   {kind:'teks', teks:'Apabila rakan menolong kita, kita ucapkan?', pilihan:['Terima kasih','Selamat tinggal','Maaf'], jwp:0},
-   {kind:'teks', teks:'Untuk badan sihat dan cergas, kita perlu?', pilihan:['Bersenam','Tidur sepanjang hari'], jwp:0},
-   {kind:'teks', teks:'Lawan bagi perkataan "bersih" ialah?', pilihan:['Kotor','Cantik'], jwp:0},
-   {kind:'em', em:'🥛', teks:'Apakah minuman berkhasiat ini?', pilihan:['Susu','Air bergas'], jwp:0},
-   {kind:'teks', teks:'Buku yang telah dibaca patut kita?', pilihan:['Simpan dengan kemas','Koyakkan'], jwp:0},
- ]},
- { bahagian:'Bahagian 2 · Padankan Gambar', soalan:[
-   {kind:'padan', pairs:[{gambar:'👨',j:'ayah'},{gambar:'👩',j:'ibu'},{gambar:'👶',j:'adik'},{gambar:'👧',j:'kakak'}]},
-   {kind:'padan', pairs:[{gambar:'🪥',j:'berus gigi'},{gambar:'⚽',j:'bola'},{gambar:'📖',j:'buku'},{gambar:'🍞',j:'roti'}]},
- ]},
- { bahagian:'Bahagian 3 · Susun Ayat', soalan:[
-   {kind:'susun', kata:['Saya','sayang','keluarga','saya']},
-   {kind:'susun', kata:['Adik','minum','susu']},
-   {kind:'susun', kata:['Kami','bermain','di','padang']},
-   {kind:'susun', kata:['Ibu','memasak','di','dapur']},
- ]},
- { bahagian:'Bahagian 4 · Isi Tempat Kosong (Penjodoh Bilangan)', soalan:[
-   {kind:'teks', teks:'Saya ada dua ___ buku.', pilihan:['buah','biji','helai'], jwp:0},
-   {kind:'teks', teks:'Adik membeli tiga ___ pensel.', pilihan:['batang','biji','buah'], jwp:0},
-   {kind:'teks', teks:'Ada lima ___ bola di dalam kotak.', pilihan:['biji','helai','batang'], jwp:0},
-   {kind:'teks', teks:'Ibu membeli empat ___ kertas.', pilihan:['helai','biji','batang'], jwp:0},
-   {kind:'teks', teks:'Tukang masak menggunakan dua ___ pisau.', pilihan:['bilah','biji','buah'], jwp:0},
- ]},
- { bahagian:'Bahagian 5 · Isi Tempat Kosong', soalan:[
-   {kind:'teks', teks:'Saya ___ gigi dua kali sehari.', pilihan:['menggosok','membaca'], jwp:0},
-   {kind:'teks', teks:'Adik ___ susu setiap pagi.', pilihan:['minum','makan'], jwp:0},
-   {kind:'teks', teks:'Kami ___ di padang setiap petang.', pilihan:['bermain','tidur'], jwp:0},
-   {kind:'teks', teks:'Ibu ___ baju yang kotor.', pilihan:['membasuh','memandu'], jwp:0},
-   {kind:'teks', teks:'Burung ___ di udara.', pilihan:['terbang','berenang'], jwp:0},
- ]},
- { bahagian:'Bahagian 6 · Bina Ayat', soalan:[
-   {kind:'susun', em:'🐱', teks:'Bina ayat tentang gambar ini:', kata:['Kucing','itu','comel']},
-   {kind:'susun', em:'⚽', teks:'Bina ayat tentang gambar ini:', kata:['Ali','bermain','bola']},
-   {kind:'susun', em:'🍚', teks:'Bina ayat tentang gambar ini:', kata:['Saya','makan','nasi']},
-   {kind:'susun', em:'🌧️', teks:'Bina ayat tentang gambar ini:', kata:['Hujan','turun','dengan','lebat']},
- ]},
+/* ===================== ULANGKAJI MODUL SELANGKAH — 10 SET RAWAK (Tema 1–3) =====================
+   Setiap set: 6 bahagian (Soalan Objektif · Padankan Gambar · Susun Ayat ·
+   Isi Tempat Kosong [Penjodoh Bilangan] · Isi Tempat Kosong · Bina Ayat).
+   Satu set dipilih secara rawak setiap kali Modul dimulakan (elak ulang berturut-turut).
+   ===================================================================================== */
+const MODUL_SETS = [
+ /* ---------------- SET 1 ---------------- */
+ [
+  { bahagian:"Soalan Objektif", soalan:[
+    {kind:"em", em:"🐔", teks:"Apakah haiwan ini?", pilihan:["Ayam","Itik","Angsa"], jwp:0},
+    {kind:"teks", teks:"Ibu kepada ibu kita dipanggil?", pilihan:["Nenek","Kakak","Ibu"], jwp:0},
+    {kind:"teks", teks:"Antara berikut, makanan yang sihat ialah?", pilihan:["Buah-buahan","Gula-gula","Aiskrim"], jwp:0},
+    {kind:"em", em:"🪥", teks:"Kita menggosok gigi menggunakan?", pilihan:["Berus gigi","Sabun","Syampu"], jwp:0},
+    {kind:"em", em:"🐃", teks:"Haiwan yang membantu membajak sawah ialah?", pilihan:["Kerbau","Kucing","Ayam"], jwp:0},
+  ]},
+  { bahagian:"Padankan Gambar", soalan:[
+    {kind:"padan", pairs:[{gambar:"👨",j:"ayah"},{gambar:"👩",j:"ibu"},{gambar:"👶",j:"adik"},{gambar:"👧",j:"kakak"}]},
+    {kind:"padan", pairs:[{gambar:"🪥",j:"berus gigi"},{gambar:"⚽",j:"bola"},{gambar:"📖",j:"buku"},{gambar:"🍞",j:"roti"}]},
+  ]},
+  { bahagian:"Susun Ayat", soalan:[
+    {kind:"susun", kata:["Saya","sayang","keluarga","saya"]},
+    {kind:"susun", kata:["Adik","minum","susu"]},
+    {kind:"susun", kata:["Kami","bermain","di","padang"]},
+  ]},
+  { bahagian:"Isi Tempat Kosong (Penjodoh Bilangan)", soalan:[
+    {kind:"teks", teks:"Saya ada dua ___ buku.", pilihan:["buah","biji","helai"], jwp:0},
+    {kind:"teks", teks:"Adik membeli tiga ___ pensel.", pilihan:["batang","biji","buah"], jwp:0},
+    {kind:"teks", teks:"Ada lima ___ bola di dalam kotak.", pilihan:["biji","helai","batang"], jwp:0},
+  ]},
+  { bahagian:"Isi Tempat Kosong", soalan:[
+    {kind:"teks", teks:"Saya ___ gigi dua kali sehari.", pilihan:["menggosok","membaca"], jwp:0},
+    {kind:"teks", teks:"Adik ___ susu setiap pagi.", pilihan:["minum","makan"], jwp:0},
+    {kind:"teks", teks:"Kami ___ di padang setiap petang.", pilihan:["bermain","tidur"], jwp:0},
+  ]},
+  { bahagian:"Bina Ayat", soalan:[
+    {kind:"susun", em:"🐱", teks:"Bina ayat tentang gambar ini:", kata:["Kucing","itu","comel"]},
+    {kind:"susun", em:"⚽", teks:"Bina ayat tentang gambar ini:", kata:["Ali","bermain","bola"]},
+    {kind:"susun", em:"🍚", teks:"Bina ayat tentang gambar ini:", kata:["Saya","makan","nasi"]},
+  ]},
+ ],
+ /* ---------------- SET 2 ---------------- */
+ [
+  { bahagian:"Soalan Objektif", soalan:[
+    {kind:"teks", teks:"Apabila rakan menolong kita, kita ucapkan?", pilihan:["Terima kasih","Selamat tinggal","Maaf"], jwp:0},
+    {kind:"teks", teks:"Untuk badan sihat dan cergas, kita perlu?", pilihan:["Bersenam","Tidur sepanjang hari"], jwp:0},
+    {kind:"teks", teks:"Lawan bagi perkataan \"bersih\" ialah?", pilihan:["Kotor","Cantik"], jwp:0},
+    {kind:"em", em:"🥛", teks:"Apakah minuman berkhasiat ini?", pilihan:["Susu","Air bergas"], jwp:0},
+    {kind:"teks", teks:"Buku yang telah dibaca patut kita?", pilihan:["Simpan dengan kemas","Koyakkan"], jwp:0},
+  ]},
+  { bahagian:"Padankan Gambar", soalan:[
+    {kind:"padan", pairs:[{gambar:"🐔",j:"ayam"},{gambar:"🐟",j:"ikan"},{gambar:"🐃",j:"kerbau"},{gambar:"🐱",j:"kucing"}]},
+    {kind:"padan", pairs:[{gambar:"🪑",j:"kerusi"},{gambar:"✂️",j:"gunting"},{gambar:"📏",j:"pembaris"},{gambar:"✏️",j:"pensel"}]},
+  ]},
+  { bahagian:"Susun Ayat", soalan:[
+    {kind:"susun", kata:["Ibu","memasak","di","dapur"]},
+    {kind:"susun", kata:["Ayah","membaca","surat","khabar"]},
+    {kind:"susun", kata:["Saya","suka","makan","buah"]},
+  ]},
+  { bahagian:"Isi Tempat Kosong (Penjodoh Bilangan)", soalan:[
+    {kind:"teks", teks:"Ibu membeli empat ___ kertas.", pilihan:["helai","biji","batang"], jwp:0},
+    {kind:"teks", teks:"Tukang masak menggunakan dua ___ pisau.", pilihan:["bilah","biji","buah"], jwp:0},
+    {kind:"teks", teks:"Ada se___ ikan di dalam akuarium.", pilihan:["ekor","biji","helai"], jwp:0},
+  ]},
+  { bahagian:"Isi Tempat Kosong", soalan:[
+    {kind:"teks", teks:"Ibu ___ baju yang kotor.", pilihan:["membasuh","memandu"], jwp:0},
+    {kind:"teks", teks:"Burung ___ di udara.", pilihan:["terbang","berenang"], jwp:0},
+    {kind:"teks", teks:"Ayah ___ kereta ke pejabat.", pilihan:["memandu","memasak"], jwp:0},
+  ]},
+  { bahagian:"Bina Ayat", soalan:[
+    {kind:"susun", em:"🌧️", teks:"Bina ayat tentang gambar ini:", kata:["Hujan","turun","dengan","lebat"]},
+    {kind:"susun", em:"🐦", teks:"Bina ayat tentang gambar ini:", kata:["Burung","itu","berkicau"]},
+    {kind:"susun", em:"📖", teks:"Bina ayat tentang gambar ini:", kata:["Adik","membaca","buku"]},
+  ]},
+ ],
+ /* ---------------- SET 3 ---------------- */
+ [
+  { bahagian:"Soalan Objektif", soalan:[
+    {kind:"em", em:"🐟", teks:"Apakah haiwan ini?", pilihan:["Ikan","Ayam","Itik"], jwp:0},
+    {kind:"em", em:"🚣", teks:"Pengangkutan air ini dinamakan?", pilihan:["Sampan","Kereta","Basikal"], jwp:0},
+    {kind:"teks", teks:"Apabila kita tersilap, kita patut ucap?", pilihan:["Maaf","Terima kasih"], jwp:0},
+    {kind:"em", em:"🪑", teks:"Apakah ini?", pilihan:["Kerusi","Meja","Pintu"], jwp:0},
+    {kind:"em", em:"✂️", teks:"Apakah alat ini?", pilihan:["Gunting","Pembaris","Pensel"], jwp:0},
+  ]},
+  { bahagian:"Padankan Gambar", soalan:[
+    {kind:"padan", pairs:[{gambar:"🍌",j:"pisang"},{gambar:"🥕",j:"lobak"},{gambar:"🥛",j:"susu"},{gambar:"🍞",j:"roti"}]},
+    {kind:"padan", pairs:[{gambar:"🧼",j:"sabun"},{gambar:"🧴",j:"syampu"},{gambar:"🧖",j:"tuala"},{gambar:"🪥",j:"berus gigi"}]},
+  ]},
+  { bahagian:"Susun Ayat", soalan:[
+    {kind:"susun", kata:["Kakak","menyapu","sampah"]},
+    {kind:"susun", kata:["Abang","menolong","ibu"]},
+    {kind:"susun", kata:["Kucing","itu","sangat","comel"]},
+  ]},
+  { bahagian:"Isi Tempat Kosong (Penjodoh Bilangan)", soalan:[
+    {kind:"teks", teks:"Datuk menanam se___ pokok mangga.", pilihan:["batang","biji","ekor"], jwp:0},
+    {kind:"teks", teks:"Ibu memetik se___ bunga.", pilihan:["kuntum","biji","ekor"], jwp:0},
+    {kind:"teks", teks:"Kami tinggal di se___ rumah.", pilihan:["buah","biji","helai"], jwp:0},
+  ]},
+  { bahagian:"Isi Tempat Kosong", soalan:[
+    {kind:"teks", teks:"Kakak ___ lantai dengan penyapu.", pilihan:["menyapu","menulis"], jwp:0},
+    {kind:"teks", teks:"Cikgu ___ di papan tulis.", pilihan:["menulis","berlari"], jwp:0},
+    {kind:"teks", teks:"Ikan ___ di dalam air.", pilihan:["berenang","terbang"], jwp:0},
+  ]},
+  { bahagian:"Bina Ayat", soalan:[
+    {kind:"susun", em:"🚗", teks:"Bina ayat tentang gambar ini:", kata:["Ayah","memandu","kereta"]},
+    {kind:"susun", em:"🌳", teks:"Bina ayat tentang gambar ini:", kata:["Pokok","itu","sangat","tinggi"]},
+    {kind:"susun", em:"🐟", teks:"Bina ayat tentang gambar ini:", kata:["Ikan","berenang","di","sungai"]},
+  ]},
+ ],
+ /* ---------------- SET 4 ---------------- */
+ [
+  { bahagian:"Soalan Objektif", soalan:[
+    {kind:"teks", teks:"Pada waktu pagi, kita memberi salam?", pilihan:["Selamat pagi","Selamat malam"], jwp:0},
+    {kind:"em", em:"🍌", teks:"Apakah buah ini?", pilihan:["Pisang","Betik","Tembikai"], jwp:0},
+    {kind:"em", em:"🥕", teks:"Apakah sayur ini?", pilihan:["Lobak","Bayam","Terung"], jwp:0},
+    {kind:"em", em:"🏸", teks:"Permainan menggunakan raket ini ialah?", pilihan:["Badminton","Bola sepak"], jwp:0},
+    {kind:"em", em:"🌾", teks:"Tempat menanam padi ialah?", pilihan:["Sawah","Sungai","Hutan"], jwp:0},
+  ]},
+  { bahagian:"Padankan Gambar", soalan:[
+    {kind:"padan", pairs:[{gambar:"🏸",j:"badminton"},{gambar:"🏊",j:"berenang"},{gambar:"🚴",j:"berbasikal"},{gambar:"⚽",j:"bola sepak"}]},
+    {kind:"padan", pairs:[{gambar:"👶",j:"adik"},{gambar:"👦",j:"abang"},{gambar:"👧",j:"kakak"},{gambar:"👵",j:"nenek"}]},
+  ]},
+  { bahagian:"Susun Ayat", soalan:[
+    {kind:"susun", kata:["Burung","terbang","di","udara"]},
+    {kind:"susun", kata:["Nenek","tinggal","di","kampung"]},
+    {kind:"susun", kata:["Saya","menggosok","gigi","pagi"]},
+  ]},
+  { bahagian:"Isi Tempat Kosong (Penjodoh Bilangan)", soalan:[
+    {kind:"teks", teks:"Ayah membeli se___ baju baharu.", pilihan:["helai","batang","biji"], jwp:0},
+    {kind:"teks", teks:"Terdapat tiga ___ telur di dalam bakul.", pilihan:["biji","helai","batang"], jwp:0},
+    {kind:"teks", teks:"Saya melihat se___ kereta di tepi jalan.", pilihan:["buah","ekor","helai"], jwp:0},
+  ]},
+  { bahagian:"Isi Tempat Kosong", soalan:[
+    {kind:"teks", teks:"Nenek ___ kuih di dapur.", pilihan:["membuat","memandu"], jwp:0},
+    {kind:"teks", teks:"Saya ___ buku cerita di perpustakaan.", pilihan:["membaca","memasak"], jwp:0},
+    {kind:"teks", teks:"Abang ___ bola di padang.", pilihan:["menendang","menyiram"], jwp:0},
+  ]},
+  { bahagian:"Bina Ayat", soalan:[
+    {kind:"susun", em:"🏃", teks:"Bina ayat tentang gambar ini:", kata:["Budak","itu","berlari","pantas"]},
+    {kind:"susun", em:"🌸", teks:"Bina ayat tentang gambar ini:", kata:["Bunga","itu","cantik"]},
+    {kind:"susun", em:"🥛", teks:"Bina ayat tentang gambar ini:", kata:["Saya","minum","susu"]},
+  ]},
+ ],
+ /* ---------------- SET 5 ---------------- */
+ [
+  { bahagian:"Soalan Objektif", soalan:[
+    {kind:"teks", teks:"Nenek hendak melintas jalan. Kita patut?", pilihan:["Pimpin tangan nenek","Berlari dahulu"], jwp:0},
+    {kind:"em", em:"🧼", teks:"Semasa mandi, kita guna?", pilihan:["Sabun","Gula","Tepung"], jwp:0},
+    {kind:"teks", teks:"Selepas bersukan, badan kita berasa?", pilihan:["Cergas","Lemah"], jwp:0},
+    {kind:"em", em:"📖", teks:"Apakah ini?", pilihan:["Buku","Pintu","Tingkap"], jwp:0},
+    {kind:"teks", teks:"Ibu mengangkat barang berat. Kita patut?", pilihan:["Tolong angkat","Tengok sahaja"], jwp:0},
+  ]},
+  { bahagian:"Padankan Gambar", soalan:[
+    {kind:"padan", pairs:[{gambar:"👨",j:"ayah"},{gambar:"👩",j:"ibu"},{gambar:"👶",j:"adik"},{gambar:"👧",j:"kakak"}]},
+    {kind:"padan", pairs:[{gambar:"🐔",j:"ayam"},{gambar:"🐟",j:"ikan"},{gambar:"🐃",j:"kerbau"},{gambar:"🐱",j:"kucing"}]},
+  ]},
+  { bahagian:"Susun Ayat", soalan:[
+    {kind:"susun", kata:["Saya","sayang","keluarga","saya"]},
+    {kind:"susun", kata:["Ibu","memasak","di","dapur"]},
+    {kind:"susun", kata:["Kakak","menyapu","sampah"]},
+  ]},
+  { bahagian:"Isi Tempat Kosong (Penjodoh Bilangan)", soalan:[
+    {kind:"teks", teks:"Saya ada dua ___ buku.", pilihan:["buah","biji","helai"], jwp:0},
+    {kind:"teks", teks:"Ibu membeli empat ___ kertas.", pilihan:["helai","biji","batang"], jwp:0},
+    {kind:"teks", teks:"Datuk menanam se___ pokok mangga.", pilihan:["batang","biji","ekor"], jwp:0},
+  ]},
+  { bahagian:"Isi Tempat Kosong", soalan:[
+    {kind:"teks", teks:"Saya ___ gigi dua kali sehari.", pilihan:["menggosok","membaca"], jwp:0},
+    {kind:"teks", teks:"Ibu ___ baju yang kotor.", pilihan:["membasuh","memandu"], jwp:0},
+    {kind:"teks", teks:"Kakak ___ lantai dengan penyapu.", pilihan:["menyapu","menulis"], jwp:0},
+  ]},
+  { bahagian:"Bina Ayat", soalan:[
+    {kind:"susun", em:"🐱", teks:"Bina ayat tentang gambar ini:", kata:["Kucing","itu","comel"]},
+    {kind:"susun", em:"🌧️", teks:"Bina ayat tentang gambar ini:", kata:["Hujan","turun","dengan","lebat"]},
+    {kind:"susun", em:"🚗", teks:"Bina ayat tentang gambar ini:", kata:["Ayah","memandu","kereta"]},
+  ]},
+ ],
+ /* ---------------- SET 6 ---------------- */
+ [
+  { bahagian:"Soalan Objektif", soalan:[
+    {kind:"em", em:"🐃", teks:"Haiwan yang membantu membajak sawah ialah?", pilihan:["Kerbau","Kucing","Ayam"], jwp:0},
+    {kind:"teks", teks:"Buku yang telah dibaca patut kita?", pilihan:["Simpan dengan kemas","Koyakkan"], jwp:0},
+    {kind:"em", em:"✂️", teks:"Apakah alat ini?", pilihan:["Gunting","Pembaris","Pensel"], jwp:0},
+    {kind:"em", em:"🌾", teks:"Tempat menanam padi ialah?", pilihan:["Sawah","Sungai","Hutan"], jwp:0},
+    {kind:"teks", teks:"Ibu mengangkat barang berat. Kita patut?", pilihan:["Tolong angkat","Tengok sahaja"], jwp:0},
+  ]},
+  { bahagian:"Padankan Gambar", soalan:[
+    {kind:"padan", pairs:[{gambar:"🪥",j:"berus gigi"},{gambar:"⚽",j:"bola"},{gambar:"📖",j:"buku"},{gambar:"🍞",j:"roti"}]},
+    {kind:"padan", pairs:[{gambar:"🪑",j:"kerusi"},{gambar:"✂️",j:"gunting"},{gambar:"📏",j:"pembaris"},{gambar:"✏️",j:"pensel"}]},
+  ]},
+  { bahagian:"Susun Ayat", soalan:[
+    {kind:"susun", kata:["Adik","minum","susu"]},
+    {kind:"susun", kata:["Ayah","membaca","surat","khabar"]},
+    {kind:"susun", kata:["Abang","menolong","ibu"]},
+  ]},
+  { bahagian:"Isi Tempat Kosong (Penjodoh Bilangan)", soalan:[
+    {kind:"teks", teks:"Adik membeli tiga ___ pensel.", pilihan:["batang","biji","buah"], jwp:0},
+    {kind:"teks", teks:"Tukang masak menggunakan dua ___ pisau.", pilihan:["bilah","biji","buah"], jwp:0},
+    {kind:"teks", teks:"Ibu memetik se___ bunga.", pilihan:["kuntum","biji","ekor"], jwp:0},
+  ]},
+  { bahagian:"Isi Tempat Kosong", soalan:[
+    {kind:"teks", teks:"Adik ___ susu setiap pagi.", pilihan:["minum","makan"], jwp:0},
+    {kind:"teks", teks:"Burung ___ di udara.", pilihan:["terbang","berenang"], jwp:0},
+    {kind:"teks", teks:"Cikgu ___ di papan tulis.", pilihan:["menulis","berlari"], jwp:0},
+  ]},
+  { bahagian:"Bina Ayat", soalan:[
+    {kind:"susun", em:"⚽", teks:"Bina ayat tentang gambar ini:", kata:["Ali","bermain","bola"]},
+    {kind:"susun", em:"🐦", teks:"Bina ayat tentang gambar ini:", kata:["Burung","itu","berkicau"]},
+    {kind:"susun", em:"🌳", teks:"Bina ayat tentang gambar ini:", kata:["Pokok","itu","sangat","tinggi"]},
+  ]},
+ ],
+ /* ---------------- SET 7 ---------------- */
+ [
+  { bahagian:"Soalan Objektif", soalan:[
+    {kind:"teks", teks:"Antara berikut, makanan yang sihat ialah?", pilihan:["Buah-buahan","Gula-gula","Aiskrim"], jwp:0},
+    {kind:"teks", teks:"Lawan bagi perkataan \"bersih\" ialah?", pilihan:["Kotor","Cantik"], jwp:0},
+    {kind:"teks", teks:"Apabila kita tersilap, kita patut ucap?", pilihan:["Maaf","Terima kasih"], jwp:0},
+    {kind:"em", em:"🥕", teks:"Apakah sayur ini?", pilihan:["Lobak","Bayam","Terung"], jwp:0},
+    {kind:"teks", teks:"Selepas bersukan, badan kita berasa?", pilihan:["Cergas","Lemah"], jwp:0},
+  ]},
+  { bahagian:"Padankan Gambar", soalan:[
+    {kind:"padan", pairs:[{gambar:"🍌",j:"pisang"},{gambar:"🥕",j:"lobak"},{gambar:"🥛",j:"susu"},{gambar:"🍞",j:"roti"}]},
+    {kind:"padan", pairs:[{gambar:"🏸",j:"badminton"},{gambar:"🏊",j:"berenang"},{gambar:"🚴",j:"berbasikal"},{gambar:"⚽",j:"bola sepak"}]},
+  ]},
+  { bahagian:"Susun Ayat", soalan:[
+    {kind:"susun", kata:["Kami","bermain","di","padang"]},
+    {kind:"susun", kata:["Saya","suka","makan","buah"]},
+    {kind:"susun", kata:["Kucing","itu","sangat","comel"]},
+  ]},
+  { bahagian:"Isi Tempat Kosong (Penjodoh Bilangan)", soalan:[
+    {kind:"teks", teks:"Ada lima ___ bola di dalam kotak.", pilihan:["biji","helai","batang"], jwp:0},
+    {kind:"teks", teks:"Ada se___ ikan di dalam akuarium.", pilihan:["ekor","biji","helai"], jwp:0},
+    {kind:"teks", teks:"Kami tinggal di se___ rumah.", pilihan:["buah","biji","helai"], jwp:0},
+  ]},
+  { bahagian:"Isi Tempat Kosong", soalan:[
+    {kind:"teks", teks:"Kami ___ di padang setiap petang.", pilihan:["bermain","tidur"], jwp:0},
+    {kind:"teks", teks:"Ayah ___ kereta ke pejabat.", pilihan:["memandu","memasak"], jwp:0},
+    {kind:"teks", teks:"Ikan ___ di dalam air.", pilihan:["berenang","terbang"], jwp:0},
+  ]},
+  { bahagian:"Bina Ayat", soalan:[
+    {kind:"susun", em:"🍚", teks:"Bina ayat tentang gambar ini:", kata:["Saya","makan","nasi"]},
+    {kind:"susun", em:"📖", teks:"Bina ayat tentang gambar ini:", kata:["Adik","membaca","buku"]},
+    {kind:"susun", em:"🐟", teks:"Bina ayat tentang gambar ini:", kata:["Ikan","berenang","di","sungai"]},
+  ]},
+ ],
+ /* ---------------- SET 8 ---------------- */
+ [
+  { bahagian:"Soalan Objektif", soalan:[
+    {kind:"em", em:"🐔", teks:"Apakah haiwan ini?", pilihan:["Ayam","Itik","Angsa"], jwp:0},
+    {kind:"teks", teks:"Untuk badan sihat dan cergas, kita perlu?", pilihan:["Bersenam","Tidur sepanjang hari"], jwp:0},
+    {kind:"em", em:"🪑", teks:"Apakah ini?", pilihan:["Kerusi","Meja","Pintu"], jwp:0},
+    {kind:"em", em:"🏸", teks:"Permainan menggunakan raket ini ialah?", pilihan:["Badminton","Bola sepak"], jwp:0},
+    {kind:"em", em:"🧼", teks:"Semasa mandi, kita guna?", pilihan:["Sabun","Gula","Tepung"], jwp:0},
+  ]},
+  { bahagian:"Padankan Gambar", soalan:[
+    {kind:"padan", pairs:[{gambar:"🧼",j:"sabun"},{gambar:"🧴",j:"syampu"},{gambar:"🧖",j:"tuala"},{gambar:"🪥",j:"berus gigi"}]},
+    {kind:"padan", pairs:[{gambar:"👶",j:"adik"},{gambar:"👦",j:"abang"},{gambar:"👧",j:"kakak"},{gambar:"👵",j:"nenek"}]},
+  ]},
+  { bahagian:"Susun Ayat", soalan:[
+    {kind:"susun", kata:["Burung","terbang","di","udara"]},
+    {kind:"susun", kata:["Adik","minum","susu"]},
+    {kind:"susun", kata:["Nenek","tinggal","di","kampung"]},
+  ]},
+  { bahagian:"Isi Tempat Kosong (Penjodoh Bilangan)", soalan:[
+    {kind:"teks", teks:"Ayah membeli se___ baju baharu.", pilihan:["helai","batang","biji"], jwp:0},
+    {kind:"teks", teks:"Adik membeli tiga ___ pensel.", pilihan:["batang","biji","buah"], jwp:0},
+    {kind:"teks", teks:"Terdapat tiga ___ telur di dalam bakul.", pilihan:["biji","helai","batang"], jwp:0},
+  ]},
+  { bahagian:"Isi Tempat Kosong", soalan:[
+    {kind:"teks", teks:"Nenek ___ kuih di dapur.", pilihan:["membuat","memandu"], jwp:0},
+    {kind:"teks", teks:"Adik ___ susu setiap pagi.", pilihan:["minum","makan"], jwp:0},
+    {kind:"teks", teks:"Saya ___ buku cerita di perpustakaan.", pilihan:["membaca","memasak"], jwp:0},
+  ]},
+  { bahagian:"Bina Ayat", soalan:[
+    {kind:"susun", em:"🏃", teks:"Bina ayat tentang gambar ini:", kata:["Budak","itu","berlari","pantas"]},
+    {kind:"susun", em:"⚽", teks:"Bina ayat tentang gambar ini:", kata:["Ali","bermain","bola"]},
+    {kind:"susun", em:"🌸", teks:"Bina ayat tentang gambar ini:", kata:["Bunga","itu","cantik"]},
+  ]},
+ ],
+ /* ---------------- SET 9 ---------------- */
+ [
+  { bahagian:"Soalan Objektif", soalan:[
+    {kind:"teks", teks:"Ibu kepada ibu kita dipanggil?", pilihan:["Nenek","Kakak","Ibu"], jwp:0},
+    {kind:"em", em:"🥛", teks:"Apakah minuman berkhasiat ini?", pilihan:["Susu","Air bergas"], jwp:0},
+    {kind:"em", em:"🐟", teks:"Apakah haiwan ini?", pilihan:["Ikan","Ayam","Itik"], jwp:0},
+    {kind:"teks", teks:"Pada waktu pagi, kita memberi salam?", pilihan:["Selamat pagi","Selamat malam"], jwp:0},
+    {kind:"em", em:"📖", teks:"Apakah ini?", pilihan:["Buku","Pintu","Tingkap"], jwp:0},
+  ]},
+  { bahagian:"Padankan Gambar", soalan:[
+    {kind:"padan", pairs:[{gambar:"👨",j:"ayah"},{gambar:"👩",j:"ibu"},{gambar:"👶",j:"adik"},{gambar:"👧",j:"kakak"}]},
+    {kind:"padan", pairs:[{gambar:"🍌",j:"pisang"},{gambar:"🥕",j:"lobak"},{gambar:"🥛",j:"susu"},{gambar:"🍞",j:"roti"}]},
+  ]},
+  { bahagian:"Susun Ayat", soalan:[
+    {kind:"susun", kata:["Saya","menggosok","gigi","pagi"]},
+    {kind:"susun", kata:["Kami","bermain","di","padang"]},
+    {kind:"susun", kata:["Saya","suka","makan","buah"]},
+  ]},
+  { bahagian:"Isi Tempat Kosong (Penjodoh Bilangan)", soalan:[
+    {kind:"teks", teks:"Saya melihat se___ kereta di tepi jalan.", pilihan:["buah","ekor","helai"], jwp:0},
+    {kind:"teks", teks:"Ada lima ___ bola di dalam kotak.", pilihan:["biji","helai","batang"], jwp:0},
+    {kind:"teks", teks:"Ada se___ ikan di dalam akuarium.", pilihan:["ekor","biji","helai"], jwp:0},
+  ]},
+  { bahagian:"Isi Tempat Kosong", soalan:[
+    {kind:"teks", teks:"Abang ___ bola di padang.", pilihan:["menendang","menyiram"], jwp:0},
+    {kind:"teks", teks:"Kami ___ di padang setiap petang.", pilihan:["bermain","tidur"], jwp:0},
+    {kind:"teks", teks:"Ayah ___ kereta ke pejabat.", pilihan:["memandu","memasak"], jwp:0},
+  ]},
+  { bahagian:"Bina Ayat", soalan:[
+    {kind:"susun", em:"🥛", teks:"Bina ayat tentang gambar ini:", kata:["Saya","minum","susu"]},
+    {kind:"susun", em:"🍚", teks:"Bina ayat tentang gambar ini:", kata:["Saya","makan","nasi"]},
+    {kind:"susun", em:"📖", teks:"Bina ayat tentang gambar ini:", kata:["Adik","membaca","buku"]},
+  ]},
+ ],
+ /* ---------------- SET 10 ---------------- */
+ [
+  { bahagian:"Soalan Objektif", soalan:[
+    {kind:"em", em:"🪥", teks:"Kita menggosok gigi menggunakan?", pilihan:["Berus gigi","Sabun","Syampu"], jwp:0},
+    {kind:"teks", teks:"Apabila rakan menolong kita, kita ucapkan?", pilihan:["Terima kasih","Selamat tinggal","Maaf"], jwp:0},
+    {kind:"em", em:"🚣", teks:"Pengangkutan air ini dinamakan?", pilihan:["Sampan","Kereta","Basikal"], jwp:0},
+    {kind:"em", em:"🍌", teks:"Apakah buah ini?", pilihan:["Pisang","Betik","Tembikai"], jwp:0},
+    {kind:"teks", teks:"Nenek hendak melintas jalan. Kita patut?", pilihan:["Pimpin tangan nenek","Berlari dahulu"], jwp:0},
+  ]},
+  { bahagian:"Padankan Gambar", soalan:[
+    {kind:"padan", pairs:[{gambar:"🐔",j:"ayam"},{gambar:"🐟",j:"ikan"},{gambar:"🐃",j:"kerbau"},{gambar:"🐱",j:"kucing"}]},
+    {kind:"padan", pairs:[{gambar:"🧼",j:"sabun"},{gambar:"🧴",j:"syampu"},{gambar:"🧖",j:"tuala"},{gambar:"🪥",j:"berus gigi"}]},
+  ]},
+  { bahagian:"Susun Ayat", soalan:[
+    {kind:"susun", kata:["Ayah","membaca","surat","khabar"]},
+    {kind:"susun", kata:["Abang","menolong","ibu"]},
+    {kind:"susun", kata:["Saya","sayang","keluarga","saya"]},
+  ]},
+  { bahagian:"Isi Tempat Kosong (Penjodoh Bilangan)", soalan:[
+    {kind:"teks", teks:"Tukang masak menggunakan dua ___ pisau.", pilihan:["bilah","biji","buah"], jwp:0},
+    {kind:"teks", teks:"Ibu memetik se___ bunga.", pilihan:["kuntum","biji","ekor"], jwp:0},
+    {kind:"teks", teks:"Saya ada dua ___ buku.", pilihan:["buah","biji","helai"], jwp:0},
+  ]},
+  { bahagian:"Isi Tempat Kosong", soalan:[
+    {kind:"teks", teks:"Burung ___ di udara.", pilihan:["terbang","berenang"], jwp:0},
+    {kind:"teks", teks:"Cikgu ___ di papan tulis.", pilihan:["menulis","berlari"], jwp:0},
+    {kind:"teks", teks:"Saya ___ gigi dua kali sehari.", pilihan:["menggosok","membaca"], jwp:0},
+  ]},
+  { bahagian:"Bina Ayat", soalan:[
+    {kind:"susun", em:"🐦", teks:"Bina ayat tentang gambar ini:", kata:["Burung","itu","berkicau"]},
+    {kind:"susun", em:"🌳", teks:"Bina ayat tentang gambar ini:", kata:["Pokok","itu","sangat","tinggi"]},
+    {kind:"susun", em:"🐱", teks:"Bina ayat tentang gambar ini:", kata:["Kucing","itu","comel"]},
+  ]},
+ ],
 ];
+let modulSetTerakhir=-1;
 
 /* ============ utiliti ============ */
 const $=id=>document.getElementById(id);
@@ -863,6 +1178,8 @@ function nada(freqs,dur=0.12){
 }
 const bunyiBetul=()=>nada([660,880,1175]);
 const bunyiSalah=()=>nada([300,200],0.18);
+/* fanfare panjang untuk markah penuh */
+function fanfare(){ nada([523,659,784,1047, 784,1047, 880,1175, 988,1319, 1047,1568], 0.14); }
 
 /* ============ navigasi skrin ============ */
 function tunjuk(idSkrin){
@@ -973,9 +1290,13 @@ function mulaSesi(soal, meta, opsi){
 }
 
 function mulaModul(){
+  let idx=Math.random()*MODUL_SETS.length|0;
+  if(MODUL_SETS.length>1 && idx===modulSetTerakhir) idx=(idx+1)%MODUL_SETS.length;
+  modulSetTerakhir=idx;
+  const noSet=idx+1, set=MODUL_SETS[idx];
   let soal=[];
-  MODUL.forEach(b=> b.soalan.forEach(s=> soal.push({...s, arahan:b.bahagian})));
-  mulaSesi(soal, {tajuk:'Ulangkaji Modul (Tema 1–3)', modul:true}, {acak:false});
+  set.forEach((b,bi)=> b.soalan.forEach(s=> soal.push({...s, arahan:'Set '+noSet+'/'+MODUL_SETS.length+' · Bahagian '+(bi+1)+' · '+b.bahagian})));
+  mulaSesi(soal, {tajuk:'Ulangkaji Modul Selangkah', modul:true, set:noSet}, {acak:false});
 }
 
 const UCAP_OK=['Bagus! 🎉','Hebat! 🌟','Pandai! 👏','Tepat sekali! ✅','Syabas! 💯','Cantik! 🦋'];
@@ -1157,19 +1478,31 @@ function tamatSesi(){
   $('bintangBaris').textContent='⭐'.repeat(b)+'☆'.repeat(3-b);
 
   let raut='🌟',tajuk='Hebat!',ucap='';
-  if(peratus>=0.9){raut='🏆';tajuk='Cemerlang!';ucap='Anak hebat! Hampir semua betul!';}
+  if(betul===jum){raut='🏆';tajuk='Markah Penuh!';ucap='Sempurna! Semua jawapan betul! 🎉';}
+  else if(peratus>=0.9){raut='🏅';tajuk='Cemerlang!';ucap='Anak hebat! Hampir semua betul!';}
   else if(peratus>=0.6){raut='🌟';tajuk='Bagus!';ucap='Bagus! Teruskan berlatih ya!';}
   else{raut='🌱';tajuk='Jom Cuba Lagi!';ucap='Tak mengapa, latihan buat kita pandai!';}
   $('rautTamat').textContent=raut; $('tajukTamat').textContent=tajuk; $('ucapTamat').textContent=ucap;
 
-  // simpan rekod terbaik (latihan tunggal atau modul)
+  // simpan & papar rekod terbaik (latihan tunggal atau modul)
+  let rekodBaharu=false, terbaik=null, skop=null;
   if(sesi.meta && sesi.meta.modul){
-    if(rekod['__modul__']==null || betul>rekod['__modul__']){ rekod['__modul__']=betul; simpanRekod(rekod); }
+    skop='Modul';
+    if(rekod['__modul__']==null || betul>rekod['__modul__']){ rekod['__modul__']=betul; simpanRekod(rekod); rekodBaharu=true; }
+    terbaik=rekod['__modul__'];
   }else if(sesi.meta && sesi.meta.sumber && sesi.meta.sumber.length===1){
-    const id=sesi.meta.sumber[0];
-    if(rekod[id]==null || betul>rekod[id]){ rekod[id]=betul; simpanRekod(rekod); }
+    const id=sesi.meta.sumber[0]; skop='latihan ini';
+    if(rekod[id]==null || betul>rekod[id]){ rekod[id]=betul; simpanRekod(rekod); rekodBaharu=true; }
+    terbaik=rekod[id];
   }
-  if(peratus>=0.9)setTimeout(()=>nada([784,988,1175,1568],0.13),150);
+  const elBest=$('hasilTerbaik');
+  if(terbaik!=null && skop){
+    elBest.innerHTML='🏅 Markah terbaik '+skop+': '+terbaik+'/'+jum + (rekodBaharu?'<span class="baharu">Rekod baharu! 🎉</span>':'');
+    elBest.style.display='inline-block';
+  }else{ elBest.style.display='none'; }
+
+  if(betul===jum) setTimeout(fanfare,180);
+  else if(peratus>=0.9) setTimeout(()=>nada([784,988,1175,1568],0.13),150);
   tunjuk('skrinTamat');
 }
 
@@ -1191,13 +1524,17 @@ function tanyaBerhenti(){
 }
 
 /* ============ tetapan bunyi ============ */
+function kemasBunyiUI(){
+  const m=$('togolBunyi'); if(m)m.textContent=bunyiOn?'🔊 Bunyi: Buka':'🔇 Bunyi: Tutup';
+  const l=$('btnBunyiLatih'); if(l)l.textContent=bunyiOn?'🔊':'🔇';
+}
 function togolBunyi(){
   bunyiOn=!bunyiOn;
   try{localStorage.setItem('bm_t1_bunyi',bunyiOn?'on':'off')}catch(e){}
-  $('togolBunyi').textContent=bunyiOn?'🔊 Bunyi: Buka':'🔇 Bunyi: Tutup';
+  kemasBunyiUI();
   if(bunyiOn)bunyiBetul();
 }
-$('togolBunyi').textContent=bunyiOn?'🔊 Bunyi: Buka':'🔇 Bunyi: Tutup';
+kemasBunyiUI();
 
 // elak skrol getah berlebihan tapi benarkan skrol biasa
 document.addEventListener('gesturestart',e=>e.preventDefault());
